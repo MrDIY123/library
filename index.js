@@ -1,37 +1,5 @@
-const bookArray = [];
-
-class Book {
-  constructor(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read ? "Yes" : "No";
-    this.id = crypto.randomUUID();
-  }
-  toggleRead() {
-    this.read === !this.read;
-  }
-}
-
-function addBooksToLibrary(title, author, pages, read) {
-  newBook = new Book(title, author, pages, read);
-  bookArray.push(newBook);
-  updateUi();
-}
-
-function updateUi() {
-  const bookList = document.getElementById("book-list");
-  bookList.innerHTML = "";
-  bookArray.forEach((book) => {
-    const bookCard = document.createElement("div");
-    bookCard.classList.add("book-card");
-    bookCard.innerHTML = `<h3> Title: ${book.title} </h3>
-    <h3> Author: ${book.author} </h3>
-    <h3> Pages: ${book.pages} </h3>
-    <h3> Read: ${book.read} </h3>`;
-    bookList.appendChild(bookCard);
-  });
-}
+import { updateUi } from "./modules/ui.js";
+import { addBooksToLibrary } from "./modules/library.js";
 
 function addNewBook() {
   const bookModal = document.getElementById("book-modal");
@@ -44,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM Content Loaded - YAY!");
   addBooksToLibrary("Harry Potter", "JKR", 123, true);
   addBooksToLibrary("Smelly Dog", "Polly Pooks", 111, false);
+  updateUi();
   const bookModal = document.getElementById("book-modal");
   const newBookBtn = document.getElementById("new-book-btn");
   const closeModal = document.getElementById("close-modal");
@@ -56,8 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const title = document.getElementById("title").value;
     const author = document.getElementById("author").value;
     const pages = document.getElementById("pages").value;
-    const read = document.getElementById("read").value;
+    const read = document.getElementById("read").checked;
     addBooksToLibrary(title, author, pages, read);
+    updateUi();
     form.reset();
   });
   closeModal.addEventListener("click", () => {
