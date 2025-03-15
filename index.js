@@ -1,98 +1,66 @@
-const myLibrary = [];
+const bookArray = [];
 
 class Book {
   constructor(title, author, pages, read) {
-    this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read;
+    this.read = read ? "Yes" : "No";
+    this.id = crypto.randomUUID();
   }
-
   toggleRead() {
-    this.read = !this.read;
+    this.read === !this.read;
   }
 }
 
-function addBookToLibrary(title, author, pages, read) {
-  const newBook = new Book(title, author, pages, read);
-  myLibrary.push(newBook);
-  updateLibraryUI();
+function addBooksToLibrary(title, author, pages, read) {
+  newBook = new Book(title, author, pages, read);
+  bookArray.push(newBook);
+  updateUi();
 }
 
-function updateLibraryUI() {
-  const libraryContainer = document.getElementById("library");
-  if (!libraryContainer) {
-    console.error("Library container not found!");
-    return;
-  }
-
-  libraryContainer.innerHTML = ""; // Clear existing books
-
-  myLibrary.forEach((book) => {
+function updateUi() {
+  const bookList = document.getElementById("book-list");
+  bookList.innerHTML = "";
+  bookArray.forEach((book) => {
     const bookCard = document.createElement("div");
-    bookCard.classList.add("book-card"); // Optional for styling
-
-    bookCard.innerHTML = `
-      <h3>${book.title}</h3>
-      <p>by ${book.author}</p>
-      <p>${book.pages} pages</p>
-      <p>Status: <strong>${book.read ? "Read" : "Not Read"}</strong></p>
-      <button class="toggle-read" data-id="${book.id}">Toggle Read</button>
-      <button class="remove-btn" data-id="${book.id}">Remove</button>
-    `;
-
-    libraryContainer.appendChild(bookCard);
-  });
-
-  // Add event listeners to buttons AFTER elements are created
-  document.querySelectorAll(".toggle-read").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      toggleRead(e.target.dataset.id);
-    });
-  });
-
-  document.querySelectorAll(".remove-btn").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      removeBook(e.target.dataset.id);
-    });
+    bookCard.classList.add("book-card");
+    bookCard.innerHTML = `<h3> Title: ${book.title} </h3>
+    <h3> Author: ${book.author} </h3>
+    <h3> Pages: ${book.pages} </h3>
+    <h3> Read: ${book.read} </h3>`;
+    bookList.appendChild(bookCard);
   });
 }
 
-function toggleRead(id) {
-  const book = myLibrary.find((b) => b.id === id);
-  if (book) {
-    book.toggleRead();
-    updateLibraryUI();
-  }
+function addNewBook() {
+  const bookModal = document.getElementById("book-modal");
+  bookModal.addEventListener("click", () => {
+    bookModal.showModal();
+  });
 }
 
-function removeBook(id) {
-  const index = myLibrary.findIndex((b) => b.id === id);
-  if (index !== -1) {
-    myLibrary.splice(index, 1);
-    updateLibraryUI();
-  }
-}
-
-// ✅ Ensure DOM is loaded before adding event listener
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM Content Loaded - YAY!");
+  addBooksToLibrary("Harry Potter", "JKR", 123, true);
+  addBooksToLibrary("Smelly Dog", "Polly Pooks", 111, false);
+  const bookModal = document.getElementById("book-modal");
+  const newBookBtn = document.getElementById("new-book-btn");
+  const closeModal = document.getElementById("close-modal");
+  newBookBtn.addEventListener("click", () => {
+    bookModal.showModal();
+  });
   const form = document.getElementById("book-form");
-  if (!form) {
-    console.error("Book form not found!");
-    return;
-  }
-
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     const title = document.getElementById("title").value;
     const author = document.getElementById("author").value;
     const pages = document.getElementById("pages").value;
-    const read = document.getElementById("read").checked;
-
-    addBookToLibrary(title, author, pages, read);
-
-    // ✅ Clear form fields after adding a book
+    const read = document.getElementById("read").value;
+    addBooksToLibrary(title, author, pages, read);
     form.reset();
+  });
+  closeModal.addEventListener("click", () => {
+    bookModal.close();
   });
 });

@@ -1,2 +1,43 @@
-this is my HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library Project</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>My Library</h1>
+      <button id="new-book-btn">+ Add New Book</button>
+    </header>
 
+    <main>
+      <div id="book-list"></div>
+    </main>
+
+    <!-- Modal for adding books -->
+    <dialog id="book-modal">
+      <form id="book-form">
+        <h2>Add a New Book</h2>
+        <label
+          >Title:
+          <input type="text" id="title" required />
+        </label>
+        <label
+          >Author:
+          <input type="text" id="author" required />
+        </label>
+        <label
+          >Pages:
+          <input type="number" id="pages" required />
+        </label>
+        <label> <input type="checkbox" id="read" /> Read </label>
+        <button type="submit">Add Book</button>
+        <button type="button" id="close-modal">Cancel</button>
+      </form>
+    </dialog>
+
+    <script src="index.js"></script>
+  </body>
+</html>
