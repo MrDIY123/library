@@ -1,4 +1,4 @@
-import { getLibrary } from "./library.js";
+import { getLibrary, removeBook } from "./library.js";
 import { toggleReadStatus } from "./library.js";
 
 const bookList = document.getElementById("book-list");
@@ -12,7 +12,8 @@ export function updateUi() {
       <h3> Author: ${book.author} </h3>
       <h3> Pages: ${book.pages} </h3>
       <h3> Read: ${book.read} </h3>
-      <button class="complete" data-id="${book.id}">100%</button>`;
+      <button class="complete" data-id="${book.id}">100%</button>
+    <button class="remove" data-id="${book.id}">X</button>`;
     bookList.appendChild(bookCard);
   });
 }
@@ -21,6 +22,9 @@ bookList.addEventListener("click", (event) => {
   if (event.target.classList.contains("complete")) {
     console.log("100% clicked");
     toggleReadStatus(event.target.dataset.id);
+    updateUi();
+  } else if (event.target.classList.contains("remove")) {
+    removeBook(event.target.dataset.id);
     updateUi();
   }
 });

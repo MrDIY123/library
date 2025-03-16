@@ -17,4 +17,11 @@ export function toggleReadStatus(id) {
     book.toggleRead();
   }
 }
+
+export function removeBook(id) {
+  const index = bookArray.findIndex((b) => b.id === id);
+  if (index !== -1) {
+    bookArray.splice(index, 1);
+  }
+}
 /*export function removeBook() {}*/

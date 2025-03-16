@@ -7,6 +7,6 @@ export default class Book {
     this.id = crypto.randomUUID();
   }
   toggleRead() {
-    this.read = !this.read;
+    this.read = this.read === "Yes" ? "No" : "Yes";
   }
 }
